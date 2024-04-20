@@ -1,14 +1,27 @@
 package lk.ijse.helloshoeshop.entity;
 
-import java.sql.Time;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class CustomerEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@RequiredArgsConstructor
+@Entity
+@Table(name = "customer")
+public class CustomerEntity implements SuperEntity{
+    @Id
     private String customerCode;
     private String customerName;
-    private String gender;
+    private Gender gender;
     private Date joinedDate;
+    @Enumerated(EnumType.STRING)
     private Level level;
     private int totalPoints;
     private Date dob;

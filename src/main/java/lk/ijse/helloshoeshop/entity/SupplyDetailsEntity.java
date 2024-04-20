@@ -2,6 +2,7 @@ package lk.ijse.helloshoeshop.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,12 +13,13 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @Entity
-public class InventoryEntity implements SuperEntity{
+@Table(name = "supplyDetails")
+public class SupplyDetailsEntity implements SuperEntity{
     @Id
     private String itemCode;
-    private String itemDesc;
-    private String itemPic;
-    private String category;
-    private String status;
-    private double unitPriceSale;
+    @Id
+    private String supplierCode;
+    private int size;
+    private int quantity;
+    private double unitPriceBuy;
 }

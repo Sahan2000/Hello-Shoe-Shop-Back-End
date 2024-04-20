@@ -1,6 +1,21 @@
 package lk.ijse.helloshoeshop.entity;
 
-public class SupplierEntity {
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@RequiredArgsConstructor
+@Entity
+@Table(name = "supplier")
+public class SupplierEntity implements SuperEntity{
+    @Id
     private String supplierCode;
     private String supplierName;
     private Category category;
