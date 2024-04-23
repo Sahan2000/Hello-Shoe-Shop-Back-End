@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.sql.Date;
 
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Data
 @RequiredArgsConstructor
 @Entity

@@ -4,9 +4,7 @@ import lk.ijse.helloshoeshop.entity.enumerate.Role;
 import lombok.*;
 
 import java.util.List;
-
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @RequiredArgsConstructor
 public class UserDTO {

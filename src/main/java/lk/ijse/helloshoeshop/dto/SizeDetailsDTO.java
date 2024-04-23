@@ -7,7 +7,7 @@ import lk.ijse.helloshoeshop.entity.SizesEntity;
 import lombok.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Data
 @RequiredArgsConstructor
 public class SizeDetailsDTO {

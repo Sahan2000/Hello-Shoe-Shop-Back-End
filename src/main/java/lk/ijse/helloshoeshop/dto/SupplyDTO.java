@@ -3,7 +3,7 @@ package lk.ijse.helloshoeshop.dto;
 import lombok.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Data
 @RequiredArgsConstructor
 public class SupplyDTO {

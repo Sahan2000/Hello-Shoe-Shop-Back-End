@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Data
 @RequiredArgsConstructor
 public class OrderDTO {

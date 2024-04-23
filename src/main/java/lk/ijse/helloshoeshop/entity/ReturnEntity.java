@@ -10,7 +10,6 @@ import java.sql.Date;
 import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @RequiredArgsConstructor
 @Entity

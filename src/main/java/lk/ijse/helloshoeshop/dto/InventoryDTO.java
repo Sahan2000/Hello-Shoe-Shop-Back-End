@@ -5,7 +5,7 @@ import lombok.*;
 import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Data
 @RequiredArgsConstructor
 public class InventoryDTO {
