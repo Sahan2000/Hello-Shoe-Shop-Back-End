@@ -18,7 +18,9 @@ public class SupplyEntity implements SuperEntity{
     private int qty;
     private double unitBuyingPrice;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "itemCode", insertable = false, updatable = false)
     private InventoryEntity inventory;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "supplierId", insertable = false, updatable = false)
     private SupplierEntity supplier;
 }

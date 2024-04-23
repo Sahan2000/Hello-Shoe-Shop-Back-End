@@ -17,8 +17,10 @@ public class ReturnDetailsEntity implements SuperEntity{
     private int sizeType;
     private int quantity;
     private double unitPrice;
-    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "returnNo", insertable = false, updatable = false)
     private ReturnEntity returnEntity;
-    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "itemCode", insertable = false, updatable = false)
     private InventoryEntity inventory;
 }

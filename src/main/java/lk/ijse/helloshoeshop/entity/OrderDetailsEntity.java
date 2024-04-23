@@ -19,7 +19,9 @@ public class OrderDetailsEntity implements SuperEntity{
     private int sizeType;
     private int quantity;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orderNo", insertable = false, updatable = false)
     private OrderEntity order;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "itemCode", insertable = false, updatable = false)
     private InventoryEntity inventory;
 }

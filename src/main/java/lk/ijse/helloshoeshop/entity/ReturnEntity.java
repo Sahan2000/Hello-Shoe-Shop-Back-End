@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @Entity
-@Table(name = "return")
+@Table(name = "returnEntity")
 public class ReturnEntity implements SuperEntity{
     @Id
     private String returnNo;
