@@ -1,12 +1,13 @@
 package lk.ijse.helloshoeshop.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lk.ijse.helloshoeshop.entity.enumerate.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Table(name = "supplier")
 public class SupplierEntity implements SuperEntity{
     @Id
-    private String supplierCode;
+    private String supplierId;
     private String supplierName;
     private Category category;
     private String address1;
@@ -25,7 +26,10 @@ public class SupplierEntity implements SuperEntity{
     private String address4;
     private String address5;
     private String address6;
-    private String contact1;
-    private String contact2;
+    private String contactNo1;
+    private String contactNo2;
     private String email;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplier")
+    private List<SupplyEntity> supplyList;
 }
+

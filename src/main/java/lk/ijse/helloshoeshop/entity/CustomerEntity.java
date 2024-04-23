@@ -1,13 +1,16 @@
 package lk.ijse.helloshoeshop.entity;
 
 import jakarta.persistence.*;
+import lk.ijse.helloshoeshop.entity.enumerate.Gender;
+import lk.ijse.helloshoeshop.entity.enumerate.Level;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,9 +24,8 @@ public class CustomerEntity implements SuperEntity{
     private String customerName;
     private Gender gender;
     private Date joinedDate;
-    @Enumerated(EnumType.STRING)
     private Level level;
-    private int totalPoints;
+    private int totalPoint;
     private Date dob;
     private String address1;
     private String address2;
@@ -32,5 +34,7 @@ public class CustomerEntity implements SuperEntity{
     private String address5;
     private String contactNo;
     private String email;
-    private Timestamp purchaseData;
+    private Timestamp purchaseDate;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<OrderEntity> orders;
 }

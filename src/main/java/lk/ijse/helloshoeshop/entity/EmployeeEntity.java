@@ -1,12 +1,14 @@
 package lk.ijse.helloshoeshop.entity;
 
 import jakarta.persistence.*;
+import lk.ijse.helloshoeshop.entity.enumerate.Gender;
+import lk.ijse.helloshoeshop.entity.enumerate.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,16 +16,17 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "employee")
-public class EmployeeEntity implements SuperEntity{
+public class EmployeeEntity implements SuperEntity {
     @Id
     private String employeeId;
     private String employeeName;
     private String employeeProfilePic;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     private String status;
     private String designation;
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role accessRole;
     private Date dob;
     private Date joinedDate;
     private String attachedBranch;
@@ -34,6 +37,7 @@ public class EmployeeEntity implements SuperEntity{
     private String address5;
     private String contactNo;
     private String email;
-    private String nameOfGuardian;
+    private String guardian;
     private String emergencyContact;
+
 }
