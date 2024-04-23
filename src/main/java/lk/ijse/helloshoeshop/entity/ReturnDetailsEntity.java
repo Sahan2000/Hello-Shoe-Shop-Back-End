@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,8 +17,8 @@ public class ReturnDetailsEntity implements SuperEntity{
     private int sizeType;
     private int quantity;
     private double unitPrice;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ToString.Exclude
     private ReturnEntity returnEntity;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ToString.Exclude
     private InventoryEntity inventory;
 }

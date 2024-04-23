@@ -1,6 +1,5 @@
-package lk.ijse.helloshoeshop.entity;
+package lk.ijse.helloshoeshop.dto;
 
-import jakarta.persistence.*;
 import lk.ijse.helloshoeshop.entity.enumerate.Gender;
 import lk.ijse.helloshoeshop.entity.enumerate.Role;
 import lombok.AllArgsConstructor;
@@ -14,18 +13,13 @@ import java.sql.Date;
 @NoArgsConstructor
 @Data
 @RequiredArgsConstructor
-@Entity
-@Table(name = "employee")
-public class EmployeeEntity implements SuperEntity {
-    @Id
+public class EmployeeDTO {
     private String employeeId;
     private String employeeName;
     private String employeeProfilePic;
-    @Enumerated(EnumType.STRING)
     private Gender gender;
     private String status;
     private String designation;
-    @Enumerated(EnumType.STRING)
     private Role accessRole;
     private Date dob;
     private Date joinedDate;
