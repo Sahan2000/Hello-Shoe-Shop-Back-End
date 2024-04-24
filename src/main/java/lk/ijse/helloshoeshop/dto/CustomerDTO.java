@@ -27,6 +27,4 @@ public class CustomerDTO {
     private String contactNo;
     private String email;
     private Timestamp purchaseDate;
-    @ToString.Exclude
-    private List<OrderDTO> orders;
 }
