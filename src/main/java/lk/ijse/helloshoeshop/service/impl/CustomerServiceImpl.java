@@ -3,7 +3,6 @@ package lk.ijse.helloshoeshop.service.impl;
 import jakarta.transaction.Transactional;
 import lk.ijse.helloshoeshop.conversion.ConversionData;
 import lk.ijse.helloshoeshop.dto.CustomerDTO;
-import lk.ijse.helloshoeshop.entity.CustomerEntity;
 import lk.ijse.helloshoeshop.repostory.CustomerDao;
 import lk.ijse.helloshoeshop.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;

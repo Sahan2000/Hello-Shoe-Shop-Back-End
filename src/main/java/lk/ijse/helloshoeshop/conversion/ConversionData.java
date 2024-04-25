@@ -1,7 +1,6 @@
 package lk.ijse.helloshoeshop.conversion;
 
 import lk.ijse.helloshoeshop.dto.CustomerDTO;
-import lk.ijse.helloshoeshop.entity.CustomerEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

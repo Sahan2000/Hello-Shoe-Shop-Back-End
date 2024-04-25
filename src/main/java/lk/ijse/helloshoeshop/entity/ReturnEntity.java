@@ -1,26 +1,20 @@
 package lk.ijse.helloshoeshop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import java.sql.Date;
-import java.util.List;
+import java.sql.Timestamp;
 
-@AllArgsConstructor
-@Data
 @RequiredArgsConstructor
+@Data
 @Entity
-@Table(name = "returnEntity")
+@Table(name = "Returns")
 public class ReturnEntity implements SuperEntity{
     @Id
-    private String returnNo;
-    private Date returnDate;
-    private double total;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "returnEntity")
-    private List<ReturnDetailsEntity> returnDetailsEntities;
-    @OneToOne
-    private OrderEntity order;
+    private String returnId;
+    private Timestamp returnDate;
+    @OneToOne(cascade = CascadeType.ALL)
+    private StockSizeOrderDetailsEntity stockSizeOrderDetailsEntity;
+    private int qty;
 }

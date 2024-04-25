@@ -1,9 +1,5 @@
 package lk.ijse.helloshoeshop.dto;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ManyToOne;
-import lk.ijse.helloshoeshop.entity.InventoryEntity;
-import lk.ijse.helloshoeshop.entity.SizesEntity;
 import lombok.*;
 
 @AllArgsConstructor
