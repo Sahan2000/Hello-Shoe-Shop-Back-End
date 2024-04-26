@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Data
@@ -29,6 +30,6 @@ public class OrderEntity implements SuperEntity{
     private UserEntity userEntity;
 
     @OneToMany(mappedBy = "orderEntity",cascade = CascadeType.ALL)
-    private List<StockSizeOrderDetailsEntity> stockSizeOrderDetailsEntities ;
+    private List<StockSizeOrderDetailsEntity> stockSizeOrderDetailsEntities;
 
 }
