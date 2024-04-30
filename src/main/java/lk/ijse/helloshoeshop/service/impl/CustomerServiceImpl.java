@@ -63,8 +63,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String generateNextCustomerId() {
         CustomerEntity lastCustomer = customerDao.findFirstByOrderByCustomerIdDesc();
-        return (lastCustomer == null)
-                ? "Cust-" + String.format("%03d", Integer.parseInt(lastCustomer.getCustomerId().split("-")[1]))
-                : "Cust-001";
+        if (lastCustomer == null) {
+            return "Cust-001";
+        }
+        String lastCustomerId = lastCustomer.getCustomerId();
+        int lastId = Integer.parseInt(lastCustomerId.split("-")[1]);
+        int nextId = lastId + 1;
+        return "Cust-" + String.format("%03d", nextId);
     }
 }
