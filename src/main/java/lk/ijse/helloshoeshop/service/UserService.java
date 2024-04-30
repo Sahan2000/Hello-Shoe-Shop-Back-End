@@ -1,4 +1,7 @@
 package lk.ijse.helloshoeshop.service;
 
-public class UserService {
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+public interface UserService {
+    UserDetailsService userDetailsService();
 }

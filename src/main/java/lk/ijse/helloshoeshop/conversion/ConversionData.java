@@ -2,8 +2,10 @@ package lk.ijse.helloshoeshop.conversion;
 
 import lk.ijse.helloshoeshop.dto.CustomerDTO;
 import lk.ijse.helloshoeshop.dto.SupplierDTO;
+import lk.ijse.helloshoeshop.dto.UserDTO;
 import lk.ijse.helloshoeshop.entity.CustomerEntity;
 import lk.ijse.helloshoeshop.entity.SupplierEntity;
+import lk.ijse.helloshoeshop.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -35,5 +37,13 @@ public class ConversionData {
 
     public List<SupplierDTO> convertToSupplierDTOList(List<SupplierEntity> suppliers){
         return modelMapper.map(suppliers, List.class);
+    }
+
+    public UserEntity convertToUserEntity(UserDTO userDTO){
+        return modelMapper.map(userDTO, UserEntity.class);
+    }
+
+    public UserDTO convertToUserDTO(UserEntity userEntity){
+        return modelMapper.map(userEntity, UserDTO.class);
     }
 }
