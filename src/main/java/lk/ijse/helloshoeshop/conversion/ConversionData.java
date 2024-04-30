@@ -1,9 +1,11 @@
 package lk.ijse.helloshoeshop.conversion;
 
 import lk.ijse.helloshoeshop.dto.CustomerDTO;
+import lk.ijse.helloshoeshop.dto.EmployeeDTO;
 import lk.ijse.helloshoeshop.dto.SupplierDTO;
 import lk.ijse.helloshoeshop.dto.UserDTO;
 import lk.ijse.helloshoeshop.entity.CustomerEntity;
+import lk.ijse.helloshoeshop.entity.EmployeeEntity;
 import lk.ijse.helloshoeshop.entity.SupplierEntity;
 import lk.ijse.helloshoeshop.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +47,16 @@ public class ConversionData {
 
     public UserDTO convertToUserDTO(UserEntity userEntity){
         return modelMapper.map(userEntity, UserDTO.class);
+    }
+
+    public EmployeeDTO converToEmployeeDTO(EmployeeEntity employee) {
+        return modelMapper.map(employee, EmployeeDTO.class);
+    }
+    public EmployeeEntity convertToEmployeeEntity(EmployeeDTO employee) {
+        return modelMapper.map(employee, EmployeeEntity.class);
+    }
+
+    public List<EmployeeDTO> convertToEmployeeDTOList(List<EmployeeEntity> employees){
+        return modelMapper.map(employees, List.class);
     }
 }
