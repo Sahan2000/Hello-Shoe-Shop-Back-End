@@ -1,6 +1,7 @@
 package lk.ijse.helloshoeshop.service.impl;
 
 import jakarta.transaction.Transactional;
+import lk.ijse.helloshoeshop.controller.Customer;
 import lk.ijse.helloshoeshop.conversion.ConversionData;
 import lk.ijse.helloshoeshop.dto.CustomerDTO;
 import lk.ijse.helloshoeshop.entity.CustomerEntity;
@@ -10,7 +11,6 @@ import lk.ijse.helloshoeshop.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,8 +62,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String generateNextCustomerId() {
-        Long count = customerDao.count();
-        String nextId = String.format("Cust-%03d", count + 1);
-        return nextId;
+        CustomerEntity lastCustomer = customerDao.findFirstByOrderByCustomerIdDesc();
+        return (lastCustomer == null)
+                ? "Cust-" + String.format("%03d", Integer.parseInt(lastCustomer.getCustomerId().split("-")[1]))
+                : "Cust-001";
     }
 }
