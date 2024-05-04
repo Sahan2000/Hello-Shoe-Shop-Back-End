@@ -65,4 +65,15 @@ public class ConversionData {
     public List<GenderDTO> covertToGenderDTOList(List<GenderEntity> genders){
         return modelMapper.map(genders, List.class);
     }
+
+    public OccasionDTO convertToOccasionDTO(OccasionEntity occasion) {
+        return modelMapper.map(occasion, OccasionDTO.class);
+    }
+    public OccasionEntity convertToOccasionEntity(OccasionDTO occasionDTO) {
+        return modelMapper.map(occasionDTO, OccasionEntity.class);
+    }
+
+    public List<OccasionDTO> convertToOccasionDTOList(List<OccasionEntity> occasion){
+        return modelMapper.map(occasion, List.class);
+    }
 }
