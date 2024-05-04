@@ -1,6 +1,7 @@
 package lk.ijse.helloshoeshop.controller;
 
 import lk.ijse.helloshoeshop.dto.GenderDTO;
+import lk.ijse.helloshoeshop.dto.ItemDTO;
 import lk.ijse.helloshoeshop.dto.OccasionDTO;
 import lk.ijse.helloshoeshop.dto.VarietyDTO;
 import lk.ijse.helloshoeshop.service.GenderService;
@@ -27,6 +28,9 @@ public class Inventory {
 
     @Autowired
     private VarietyService varietyService;
+
+    @Autowired
+    private InventoryService inventoryDao;
 
     @GetMapping("/health")
     public String health() {
@@ -176,6 +180,71 @@ public class Inventory {
              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
                      body("Internal server error | Variety Details deleted Unsuccessfully.\nMore Details\n"+exception);
          }
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/saveInventory")
+    public ResponseEntity<?> saveInventory(@Validated @RequestBody ItemDTO inventoryDTO, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        }
+        try {
+            inventoryDao.saveInventory(inventoryDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Inventory Details saved Successfully.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Inventory saved Unsuccessfully.\nMore Details\n"+exception);
+        }
+    }
+    @GetMapping("/getAllInventory")
+    public ResponseEntity<?> getAllInventory(){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(inventoryDao.getAllInventory());
+        }catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Inventory Details fetched Unsuccessfully.\nMore Details\n"+exception);
+        }
+    }
+
+    @GetMapping("/getItem")
+    public ResponseEntity<?> getInventory(@Validated @PathVariable ("id") String id, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        }
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(inventoryDao.getInventory(id));
+        }catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Inventory Details fetched Unsuccessfully.\nMore Details\n"+exception);
+        }
+    }
+
+    @PutMapping("/updateInventory")
+    public ResponseEntity<?> updateInventory(@Validated @PathVariable ("id") String id, @RequestBody ItemDTO inventoryDTO, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        }
+        try {
+            inventoryDao.updateInventory(id, inventoryDTO);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Inventory Details updated Successfully.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Inventory Details fetched Unsuccessfully.\nMore Details\n"+exception);
+        }
+    }
+
+    @DeleteMapping("/deleteInventory")
+    public ResponseEntity<?> deleteInventory(@Validated @PathVariable ("id") String id, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        }
+        try {
+            inventoryDao.deleteInventory(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Inventory Details deleted Successfully.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Inventory Details deleted Unsuccessfully.\nMore Details\n"+exception);
+        }
     }
 
 }

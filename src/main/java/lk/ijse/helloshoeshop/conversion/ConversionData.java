@@ -87,4 +87,15 @@ public class ConversionData {
     public List<VarietyDTO> convertToVarietyDTOList(List<VarietyEntity> varieties){
         return modelMapper.map(varieties, List.class);
     }
+
+    public ItemDTO convertToItemDTO(ItemEntity itemEntity) {
+        return modelMapper.map(itemEntity, ItemDTO.class);
+    }
+    public ItemEntity convertToItemEntity(ItemDTO itemDTO) {
+        return modelMapper.map(itemDTO, ItemEntity.class);
+    }
+
+    public List<ItemDTO> convertToItemDTOList(List<ItemEntity> items){
+        return modelMapper.map(items, List.class);
+    }
 }
