@@ -2,9 +2,11 @@ package lk.ijse.helloshoeshop.controller;
 
 import lk.ijse.helloshoeshop.dto.GenderDTO;
 import lk.ijse.helloshoeshop.dto.OccasionDTO;
+import lk.ijse.helloshoeshop.dto.VarietyDTO;
 import lk.ijse.helloshoeshop.service.GenderService;
 import lk.ijse.helloshoeshop.service.InventoryService;
 import lk.ijse.helloshoeshop.service.OccasionService;
+import lk.ijse.helloshoeshop.service.VarietyService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,9 @@ public class Inventory {
 
     @Autowired
     private OccasionService occasionService;
+
+    @Autowired
+    private VarietyService varietyService;
 
     @GetMapping("/health")
     public String health() {
@@ -118,6 +123,59 @@ public class Inventory {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
                     body("Internal server error | Occasion Details deleted Unsuccessfully.\nMore Details\n"+exception);
         }
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/saveVariety")
+    public ResponseEntity<?> saveVariety(@Validated @RequestBody VarietyDTO varietyDTO, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        }
+        try {
+            varietyService.saveVariety(varietyDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Variety Details saved Successfully.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Variety saved Unsuccessfully.\nMore Details\n"+exception);
+        }
+    }
+
+    @GetMapping("/getAllVariety")
+    public ResponseEntity<?> getAllVariety(){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(varietyService.getAllVariety());
+        }catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Variety Details fetched Unsuccessfully.\nMore Details\n"+exception);
+        }
+    }
+
+    @PutMapping("/updateVariety")
+    public ResponseEntity<?> updateVariety(@Validated @PathVariable ("id") String id, @RequestBody VarietyDTO varietyDTO, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        }
+        try {
+            varietyService.updateVariety(id, varietyDTO);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Variety Details updated Successfully.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Variety Details fetched Unsuccessfully.\nMore Details\n"+exception);
+        }
+    }
+
+    @DeleteMapping("/deleteVariety")
+    public ResponseEntity<?> deleteVariety(@Validated @PathVariable ("id") String id, BindingResult bindingResult){
+         if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+        }
+         try {
+             varietyService.deleteVariety(id);
+             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Variety Details deleted Successfully.");
+         } catch (Exception exception) {
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                     body("Internal server error | Variety Details deleted Unsuccessfully.\nMore Details\n"+exception);
+         }
     }
 
 }
