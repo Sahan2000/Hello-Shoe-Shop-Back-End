@@ -29,20 +29,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void updateCustomer(String id, CustomerDTO customerDTO) {
-        Optional<CustomerEntity> customerEntity = customerDao.findById(id);
-        if (customerEntity.isEmpty()) throw new NotFoundException("Customer Not Found");
-        customerEntity.get().setCustomerName(customerDTO.getCustomerName());
-        customerEntity.get().setGender(customerDTO.getGender());
-        customerEntity.get().setJoinDate(customerDTO.getJoinDate());
-        customerEntity.get().setDob(customerDTO.getDob());
-        customerEntity.get().setAddress1(customerDTO.getAddress1());
-        customerEntity.get().setAddress2(customerDTO.getAddress2());
-        customerEntity.get().setAddress3(customerDTO.getAddress3());
-        customerEntity.get().setAddress4(customerDTO.getAddress4());
-        customerEntity.get().setPostalCode(customerDTO.getPostalCode());
-        customerEntity.get().setContactNo(customerDTO.getContactNo());
-        customerEntity.get().setEmail(customerDTO.getEmail());
-        customerEntity.get().setRecentPurchasedDate(customerDTO.getRecentPurchasedDate());
+        if (customerDao.existsById(id)) throw new NotFoundException("Customer not fond");
+        customerDao.save(convert.converToCustomerEntity(customerDTO));
     }
 
     @Override

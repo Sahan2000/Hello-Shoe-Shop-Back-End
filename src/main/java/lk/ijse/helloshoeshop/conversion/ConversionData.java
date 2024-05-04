@@ -1,13 +1,7 @@
 package lk.ijse.helloshoeshop.conversion;
 
-import lk.ijse.helloshoeshop.dto.CustomerDTO;
-import lk.ijse.helloshoeshop.dto.EmployeeDTO;
-import lk.ijse.helloshoeshop.dto.SupplierDTO;
-import lk.ijse.helloshoeshop.dto.UserDTO;
-import lk.ijse.helloshoeshop.entity.CustomerEntity;
-import lk.ijse.helloshoeshop.entity.EmployeeEntity;
-import lk.ijse.helloshoeshop.entity.SupplierEntity;
-import lk.ijse.helloshoeshop.entity.UserEntity;
+import lk.ijse.helloshoeshop.dto.*;
+import lk.ijse.helloshoeshop.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -58,5 +52,17 @@ public class ConversionData {
 
     public List<EmployeeDTO> convertToEmployeeDTOList(List<EmployeeEntity> employees){
         return modelMapper.map(employees, List.class);
+    }
+
+    public GenderDTO covertToGenderDTO(GenderEntity gender){
+        return modelMapper.map(gender, GenderDTO.class);
+    }
+
+    public GenderEntity covertToGenderEntity(GenderDTO gender){
+        return modelMapper.map(gender, GenderEntity.class);
+    }
+
+    public List<GenderDTO> covertToGenderDTOList(List<GenderEntity> genders){
+        return modelMapper.map(genders, List.class);
     }
 }

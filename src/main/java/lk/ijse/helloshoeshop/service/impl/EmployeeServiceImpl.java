@@ -60,25 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void updateEmployee(String id, EmployeeDTO employeeDTO) {
         if(!employeeDao.existsById(id)){throw new NotFoundException("Employee Not Found");}
-        Optional<EmployeeEntity> employeeEntity = employeeDao.findById(id);
-        EmployeeEntity employee = employeeEntity.get();
-        employee.setEmployeeName(employeeDTO.getEmployeeName());
-        employee.setProfilePic(employeeDTO.getProfilePic());
-        employee.setGender(employeeDTO.getGender());
-        employee.setStatus(employeeDTO.getStatus());
-        employee.setDesignation(employeeDTO.getDesignation());
-        employee.setDateOfBirth(employeeDTO.getDateOfBirth());
-        employee.setDateOfJoin(employeeDTO.getDateOfJoin());
-        employee.setAttachedBranch(employeeDTO.getAttachedBranch());
-        employee.setAddress1(employeeDTO.getAddress1());
-        employee.setAddress2(employeeDTO.getAddress2());
-        employee.setAddress3(employeeDTO.getAddress3());
-        employee.setAddress4(employeeDTO.getAddress4());
-        employee.setPostalCode(employeeDTO.getPostalCode());
-        employee.setContactNo(employeeDTO.getContactNo());
-        employee.setEmail(employeeDTO.getEmail());
-        employee.setEmergencyContactName(employeeDTO.getEmergencyContactName());
-        employee.setEmergencyContact(employeeDTO.getEmergencyContact());
+        employeeDao.save(convert.convertToEmployeeEntity(employeeDTO));
     }
 
     @Override

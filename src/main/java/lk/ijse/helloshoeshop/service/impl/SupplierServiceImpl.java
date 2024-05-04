@@ -53,19 +53,8 @@ public class SupplierServiceImpl implements SuppliersService {
 
     @Override
     public void updateSupplier(String id, SupplierDTO supplierDTO) {
-        Optional<SupplierEntity> supplierEntity = supplierDao.findById(id);
-        if (supplierEntity.isEmpty()) throw new NotFoundException("supplier Not Found");
-        supplierEntity.get().setSupplierName(supplierDTO.getSupplierName());
-        supplierEntity.get().setCategory(supplierDTO.getCategory());
-        supplierEntity.get().setAddress1(supplierDTO.getAddress1());
-        supplierEntity.get().setAddress2(supplierDTO.getAddress2());
-        supplierEntity.get().setAddress3(supplierDTO.getAddress3());
-        supplierEntity.get().setAddress4(supplierDTO.getAddress4());
-        supplierEntity.get().setPostalCode(supplierDTO.getPostalCode());
-        supplierEntity.get().setCountry(supplierDTO.getCountry());
-        supplierEntity.get().setContactNo1(supplierDTO.getContactNo1());
-        supplierEntity.get().setContactNo2(supplierDTO.getContactNo2());
-        supplierEntity.get().setEmail(supplierDTO.getEmail());
+        if (supplierDao.existsById(id)) throw new NotFoundException("supplier Not Found");
+        supplierDao.save(convert.converToSupplierEntity(supplierDTO));
     }
 
     @Override
