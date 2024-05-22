@@ -11,7 +11,7 @@ public class SupplyDTO {
     private int qty;
     private double unitBuyingPrice;
     @ToString.Exclude
-    private InventoryDTO inventory;
+    private ItemDTO inventory;
     @ToString.Exclude
     private SupplierDTO supplier;
 }

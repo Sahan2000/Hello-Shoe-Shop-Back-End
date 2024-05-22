@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Date;
 
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/api/v1/employee")
 @AllArgsConstructor

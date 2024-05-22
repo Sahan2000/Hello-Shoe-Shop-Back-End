@@ -11,5 +11,5 @@ public class SizeDetailsDTO {
     @ToString.Exclude
     private SizesDTO size;
     @ToString.Exclude
-    private InventoryDTO inventory;
+    private ItemDTO inventory;
 }

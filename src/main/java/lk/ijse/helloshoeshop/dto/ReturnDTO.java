@@ -15,6 +15,6 @@ public class ReturnDTO {
     @ToString.Exclude
     private List<ReturnDetailsDTO> returnDetails;
     @ToString.Exclude
-    private OrderDTO order;
+    private SaleServiceDTO order;
 }
 

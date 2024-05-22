@@ -14,5 +14,5 @@ public class ReturnDetailsDTO {
     @ToString.Exclude
     private ReturnDTO returnEntity;
     @ToString.Exclude
-    private InventoryDTO inventory;
+    private ItemDTO inventory;
 }
