@@ -28,6 +28,7 @@ public class User {
 
     @PostMapping("/signUp")
     public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest signup){
+        System.out.println(signup.getRole());
         return ResponseEntity.ok(authenticationService.signup(signup));
     }
 
