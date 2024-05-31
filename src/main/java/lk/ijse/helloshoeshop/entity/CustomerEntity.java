@@ -28,7 +28,7 @@ public class CustomerEntity implements SuperEntity{
 
     @Temporal(TemporalType.DATE)
     private Date joinDate;
-    private Integer totalPoint;
+    private Integer totalPoints;
 
     @Temporal(TemporalType.DATE)
     private Date dob;

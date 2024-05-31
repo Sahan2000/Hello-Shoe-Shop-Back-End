@@ -13,19 +13,21 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class CustomerDTO {
-    @Null(message = "Customer id generate by the programme")
+    @NotNull(message = "Customer id generate by the programme")
     private String customerId;
     @NotBlank(message = "customer name cannot be blank")
     @Size(min = 2, max = 100, message = "Customer name must be between 2 and 100 characters")
     private String customerName;
     @NotNull(message = "Gender cannot be a null")
     private Gender gender;
+    @NotNull(message = "level cannot be null")
     private Level level;
     @NotNull(message = "Joined date cannot be a null")
     @PastOrPresent(message = "Join date must be in the past or present")
     private Date joinDate;
     @PositiveOrZero(message = "Total points must be positive or zero")
-    private Integer totalPoint;
+    @NotNull(message = "Total points cannot be null")
+    private Integer totalPoints;
     @Past(message = "Date of birth should be in the past")
     @NotNull(message = "Date of birth cannot be null")
     private Date dob;
@@ -46,6 +48,5 @@ public class CustomerDTO {
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Invalid email format")
     private String email;
-    @NotNull(message = "Recent purchased date cannot be null")
     private Timestamp recentPurchasedDate;
 }

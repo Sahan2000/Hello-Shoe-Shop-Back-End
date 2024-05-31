@@ -11,6 +11,7 @@ import lk.ijse.helloshoeshop.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,13 +24,13 @@ public class CustomerServiceImpl implements CustomerService {
     private ConversionData convert;
     @Override
     public CustomerDTO saveCustomer(CustomerDTO customer) {
-        customer.setCustomerId(generateNextCustomerId());
+        customer.setRecentPurchasedDate(new Timestamp(System.currentTimeMillis()));
         return convert.converToCustomerDTO(customerDao.save(convert.converToCustomerEntity(customer)));
     }
 
     @Override
     public void updateCustomer(String id, CustomerDTO customerDTO) {
-        if (customerDao.existsById(id)) throw new NotFoundException("Customer not fond");
+        if (!customerDao.existsById(id)) throw new NotFoundException("Customer not fond");
         customerDao.save(convert.converToCustomerEntity(customerDTO));
     }
 

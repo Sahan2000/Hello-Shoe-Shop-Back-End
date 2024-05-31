@@ -28,6 +28,7 @@ public class Customer {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveCustomer(@Validated @RequestBody CustomerDTO customerDTO, BindingResult bindingResult){
+        System.out.println("call save customer method");
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
@@ -86,6 +87,16 @@ public class Customer {
         }catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
                     body("Internal server error | Customer Details deleted Unsuccessfully.\nMore Details\n"+exception);
+        }
+    }
+
+    @GetMapping("/nextCustId")
+    public ResponseEntity<?> generateCustomerId(){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(customerService.generateNextCustomerId());
+        }catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Customer Details fetched Unsuccessfully.\nMore Reason\n"+exception);
         }
     }
 

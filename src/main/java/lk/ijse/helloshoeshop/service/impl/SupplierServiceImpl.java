@@ -24,8 +24,6 @@ public class SupplierServiceImpl implements SuppliersService {
     private ConversionData convert;
     @Override
     public SupplierDTO saveSupplier(SupplierDTO supplierDTO) {
-        supplierDTO.setSupplierCode(generateNextSupplierId());
-        supplierDTO.setCategory(Category.LOCAL);
         return convert.converToSupplierDTO(supplierDao.save(convert.converToSupplierEntity(supplierDTO)));
     }
 
@@ -53,7 +51,9 @@ public class SupplierServiceImpl implements SuppliersService {
 
     @Override
     public void updateSupplier(String id, SupplierDTO supplierDTO) {
-        if (supplierDao.existsById(id)) throw new NotFoundException("supplier Not Found");
+        if (!supplierDao.existsById(id)) {
+            throw new NotFoundException("supplier Not Found");
+        }
         supplierDao.save(convert.converToSupplierEntity(supplierDTO));
     }
 

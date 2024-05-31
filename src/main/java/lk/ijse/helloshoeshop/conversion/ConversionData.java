@@ -98,4 +98,12 @@ public class ConversionData {
     public List<ItemDTO> convertToItemDTOList(List<ItemEntity> items){
         return modelMapper.map(items, List.class);
     }
+
+    public BranchDTO convertToBranchDTO(BranchEntity branchEntity) {
+        return modelMapper.map(branchEntity, BranchDTO.class);
+    }
+
+    public BranchEntity convertToBranchEntity(BranchDTO branchDTO) {
+        return modelMapper.map(branchDTO, BranchEntity.class);
+    }
 }

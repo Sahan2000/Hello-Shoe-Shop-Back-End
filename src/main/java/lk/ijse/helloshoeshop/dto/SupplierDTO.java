@@ -14,7 +14,6 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class SupplierDTO {
-    @Null(message = "Supplier id generate by the programme")
     private String supplierCode;
 
     @NotBlank(message = "Supplier name cannot be blank")

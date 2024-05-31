@@ -25,6 +25,18 @@ public class Supplier {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveSupplier(@Validated @RequestBody SupplierDTO supplierDTO, BindingResult bindingResult){
+        System.out.println(supplierDTO.getSupplierCode());
+        System.out.println(supplierDTO.getSupplierName());
+        System.out.println(supplierDTO.getCategory());
+        System.out.println(supplierDTO.getAddress1());
+        System.out.println(supplierDTO.getAddress2());
+        System.out.println(supplierDTO.getAddress3());
+        System.out.println(supplierDTO.getAddress4());
+        System.out.println(supplierDTO.getPostalCode());
+        System.out.println(supplierDTO.getCountry());
+        System.out.println(supplierDTO.getContactNo1());
+        System.out.println(supplierDTO.getContactNo2());
+        System.out.println(supplierDTO.getEmail());
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
@@ -83,6 +95,16 @@ public class Supplier {
         }catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
                     body("Internal server error | Supplier Details deleted Unsuccessfully.\nMore Details\n"+exception);
+        }
+    }
+
+    @GetMapping("/nextSupplierId")
+    public ResponseEntity<?> generateNextSupplierId(){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(supplierService.generateNextSupplierId());
+        }catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Supplier Details fetched Unsuccessfully.\nMore Details\n"+exception);
         }
     }
 
