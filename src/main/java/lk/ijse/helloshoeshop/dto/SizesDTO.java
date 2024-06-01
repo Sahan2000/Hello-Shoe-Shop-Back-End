@@ -1,5 +1,6 @@
 package lk.ijse.helloshoeshop.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -9,9 +10,8 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class SizesDTO {
+    @NotNull(message = "Size id generate by the programme")
     private String sizeCode;
-    private String sizeCategory;
-    private int qty;
-    @ToString.Exclude
-    private List<SizeDetailsDTO> sizeDetailsEntities;
+    @NotNull(message = "Size Description Should not null")
+    private String sizeDesc;
 }

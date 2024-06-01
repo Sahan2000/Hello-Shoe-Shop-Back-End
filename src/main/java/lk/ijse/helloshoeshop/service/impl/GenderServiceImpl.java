@@ -32,7 +32,7 @@ public class GenderServiceImpl implements GenderService {
 
     @Override
     public void updateGender(String id, GenderDTO genderDTO) {
-        if(genderDao.existsById(id)) throw new NotFoundException("Gender not found");
+        if(!genderDao.existsById(id)){ throw new NotFoundException("Gender not found");}
         genderDao.save(covert.covertToGenderEntity(genderDTO));
     }
 
@@ -40,5 +40,11 @@ public class GenderServiceImpl implements GenderService {
     public void deleteGender(String id) {
         genderDao.deleteById(id);
     }
+
+    @Override
+    public GenderDTO getGender(String id) {
+        return covert.covertToGenderDTO( genderDao.findById(id).orElse(null));
+    }
+
 
 }

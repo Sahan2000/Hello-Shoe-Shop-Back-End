@@ -1,7 +1,13 @@
 package lk.ijse.helloshoeshop.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class OccasionDTO {
     @NotNull(message = "Occasion code should not null")
     private String occasionCode;

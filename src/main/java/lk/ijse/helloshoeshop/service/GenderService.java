@@ -9,4 +9,5 @@ public interface GenderService {
     List<GenderDTO> genderGetAll();
     void updateGender(String id, GenderDTO genderDTO);
     void deleteGender(String id);
+    GenderDTO getGender(String id);
 }
