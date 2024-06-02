@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -88,7 +89,7 @@ public class ConversionData {
         return modelMapper.map(varieties, List.class);
     }
 
-    public ItemDTO convertToItemDTO(ItemEntity itemEntity) {
+    public ItemDTO convertToItemDTO(Optional<ItemEntity> itemEntity) {
         return modelMapper.map(itemEntity, ItemDTO.class);
     }
     public ItemEntity convertToItemEntity(ItemDTO itemDTO) {

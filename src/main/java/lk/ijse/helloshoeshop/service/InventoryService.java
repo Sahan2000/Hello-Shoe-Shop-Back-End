@@ -9,6 +9,6 @@ public interface InventoryService {
     String generateItemCode(ItemDTO itemDTO);
     List<ItemDTO> getAllInventory();
     ItemDTO getInventory(String id);
-    void updateInventory(String id, ItemDTO inventoryDTO);
+    void updateInventory(String id, String itemDesc, String pic);
     void deleteInventory(String id);
 }

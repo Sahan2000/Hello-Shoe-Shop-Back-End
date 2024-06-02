@@ -18,8 +18,6 @@ public class ItemDTO {
     private String itemDesc;
     @NotNull(message = "Propic cannot be null")
     private String pic;
-    @NotNull(message = "Status cannot be null")
-    private Status status;
     private String genderCode;
     private String occasionCode;
     private String varietyCode;

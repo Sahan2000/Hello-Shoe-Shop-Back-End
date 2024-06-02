@@ -1,15 +1,19 @@
 package lk.ijse.helloshoeshop.controller;
 
+import jakarta.validation.Valid;
 import lk.ijse.helloshoeshop.dto.*;
 import lk.ijse.helloshoeshop.exeption.NotFoundException;
 import lk.ijse.helloshoeshop.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
@@ -268,68 +272,94 @@ public class Inventory {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/saveInventory")
-    public ResponseEntity<?> saveInventory(@Validated @RequestBody ItemDTO inventoryDTO, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> saveItem(@Valid
+                                      @RequestPart ("itemDesc") String itemDesc,
+                                      @RequestPart ("pic") String pic,
+                                      @RequestParam(value = "genderCode", required = false, defaultValue = "-1") String genderCode,
+                                      @RequestParam(value = "occasionCode", required = false, defaultValue = "-1") String occasionCode,
+                                      @RequestParam(value = "varietyCode", required = false, defaultValue = "-1") String varietyCode,
+                                      Errors errors){
+        if (errors.hasFieldErrors()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    errors.getFieldErrors().get(0).getDefaultMessage());
         }
+
+        ItemDTO itemDTO = new ItemDTO();
+        itemDTO.setItemDesc(itemDesc);
+        itemDTO.setPic(pic);
+        itemDTO.setGenderCode(genderCode);
+        itemDTO.setOccasionCode(occasionCode);
+        itemDTO.setVarietyCode(varietyCode);
+
         try {
-            inventoryDao.saveInventory(inventoryDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Inventory Details saved Successfully.");
+            inventoryDao.saveInventory(itemDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Item Details saved Successfully.");
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-                    body("Internal server error | Inventory saved Unsuccessfully.\nMore Details\n"+exception);
+                    body("Internal server error | Item saved Unsuccessfully.\nMore Details\n"+exception);
         }
-    }
-    @GetMapping("/getAllInventory")
-    public ResponseEntity<?> getAllInventory(){
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(inventoryDao.getAllInventory());
-        }catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-                    body("Internal server error | Inventory Details fetched Unsuccessfully.\nMore Details\n"+exception);
-        }
+
     }
 
-    @GetMapping("/getItem")
-    public ResponseEntity<?> getInventory(@Validated @PathVariable ("id") String id, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
-        }
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(inventoryDao.getInventory(id));
-        }catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-                    body("Internal server error | Inventory Details fetched Unsuccessfully.\nMore Details\n"+exception);
-        }
-    }
-
-    @PutMapping("/updateInventory")
-    public ResponseEntity<?> updateInventory(@Validated @PathVariable ("id") String id, @RequestBody ItemDTO inventoryDTO, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
-        }
-        try {
-            inventoryDao.updateInventory(id, inventoryDTO);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Inventory Details updated Successfully.");
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-                    body("Internal server error | Inventory Details fetched Unsuccessfully.\nMore Details\n"+exception);
-        }
-    }
-
-    @DeleteMapping("/deleteInventory")
-    public ResponseEntity<?> deleteInventory(@Validated @PathVariable ("id") String id, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable ("id") String id){
         try {
             inventoryDao.deleteInventory(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Inventory Details deleted Successfully.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Item Details deleted Successfully.");
+        } catch (NotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found.");
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-                    body("Internal server error | Inventory Details deleted Unsuccessfully.\nMore Details\n"+exception);
+                    body("Internal server error | Item Details deleted Unsuccessfully.\nMore Reason\n"+exception);
         }
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping(value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> updateItem(@Valid
+                                             @RequestPart ("itemDesc") String itemDesc,
+                                             @RequestPart ("pic") String pic,
+                                             @PathVariable ("id") String id,
+                                             Errors errors) {
+
+        if (errors.hasFieldErrors()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    errors.getFieldErrors().get(0).getDefaultMessage());
+        }
+
+        try {
+            inventoryDao.updateInventory(id,itemDesc,pic);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Item Details Updated Successfully.");
+        } catch (NotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Item Details Updated Unsuccessfully.\nMore Reason\n"+exception);
+        }
+
+    }
+
+    @GetMapping(value = "/{id}",produces = "application/json")
+    public ResponseEntity<?> getItem(@PathVariable ("id") String id){
+        try {
+            return ResponseEntity.ok(inventoryDao.getInventory(id));
+        } catch (NotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Item Details fetched Unsuccessfully.\nMore Reason\n"+exception);
+        }
+    }
+
+    @GetMapping("/getAllItems")
+    public ResponseEntity<?> getAllItems(){
+        try {
+            return ResponseEntity.ok(inventoryDao.getAllInventory());
+        }catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Item Details fetched Unsuccessfully.\nMore Reason\n"+exception);
+        }
+    }
 }
