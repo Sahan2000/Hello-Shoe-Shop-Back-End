@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmployeeDao extends JpaRepository<EmployeeEntity, String> {
     EmployeeEntity findFirstByOrderByEmployeeCodeDesc();
+    EmployeeEntity findByEmail(String email);
 }

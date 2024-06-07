@@ -1,5 +1,7 @@
 package lk.ijse.helloshoeshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lk.ijse.helloshoeshop.entity.enumerate.Category;
 import lombok.Data;
@@ -26,6 +28,7 @@ public class SupplierEntity implements SuperEntity{
     private String contactNo1;
     private String contactNo2;
     private String email;
+    @JsonIgnore
     @OneToMany(mappedBy = "supplierEntity",cascade = CascadeType.ALL)
     private List<StockEntity> stockEntities;
 }

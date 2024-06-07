@@ -1,5 +1,6 @@
 package lk.ijse.helloshoeshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lk.ijse.helloshoeshop.entity.enumerate.Status;
 import lombok.Data;
@@ -30,5 +31,6 @@ public class ItemEntity implements SuperEntity{
     private VarietyEntity varietyEntity;
 
     @OneToMany(mappedBy = "itemEntity",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<StockEntity> stockEntities;
 }

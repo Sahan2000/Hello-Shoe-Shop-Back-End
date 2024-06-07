@@ -8,16 +8,17 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Entity
 @Table(name = "StockSizeOrderDetails")
-public class StockSizeOrderDetailsEntity implements SuperEntity{
+public class StockSizeOrderDetailsEntity implements SuperEntity {
     @Id
     private String stockSizeOrderDetailsId;
     private int qty;
 
     @ManyToOne
-    @JoinColumn(name = "stockSizeId",nullable = false)
-    private StockSizeEntity stockSizeEntity;
+    @JoinColumn(name = "stockId", nullable = false)
+    private StockEntity stockEntity;
 
     @ManyToOne
-    @JoinColumn(name = "orderId",nullable = false)
+    @JoinColumn(name = "orderId", nullable = false)
     private OrderEntity orderEntity;
+
 }
