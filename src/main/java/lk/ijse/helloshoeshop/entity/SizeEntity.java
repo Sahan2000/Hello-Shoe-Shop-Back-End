@@ -15,6 +15,6 @@ public class SizeEntity implements SuperEntity{
     private String sizeCode;
     private String sizeDesc;
 
-    @OneToMany(mappedBy = "sizeEntity",cascade = CascadeType.ALL)
-    private List<StockSizeEntity> stockSizeEntities;
+//    @OneToMany(mappedBy = "sizeEntity",cascade = CascadeType.ALL)
+//    private List<StockSizeEntity> stockSizeEntities;
 }

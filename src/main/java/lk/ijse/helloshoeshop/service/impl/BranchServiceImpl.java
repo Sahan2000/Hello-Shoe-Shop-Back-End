@@ -10,6 +10,8 @@ import lk.ijse.helloshoeshop.util.UtilMatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -27,5 +29,10 @@ public class BranchServiceImpl implements BranchService {
         }
         branchDTO.setBranchId(UtilMatter.generateId());
         branchDao.save(conversionData.convertToBranchEntity(branchDTO));
+    }
+
+    @Override
+    public List<BranchDTO> getAllBranches() {
+        return conversionData.convertToBranchDTOList(branchDao.findAll());
     }
 }

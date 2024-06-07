@@ -24,9 +24,7 @@ import java.sql.Date;
 @RequestMapping("/api/v1/employee")
 @AllArgsConstructor
 public class Employee {
-    @Autowired
-    private EmployeeService employeeService;
-
+    private final EmployeeService employeeService;
     @GetMapping("/health")
     public String healthCheck(){
         return "Employee Health Check";
@@ -34,14 +32,14 @@ public class Employee {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> saveEmployee(@Validated
-                                              @RequestPart ("employeeName") String employeeName,
+    public ResponseEntity<?> saveEmployee(@Valid
+                                          @RequestPart ("employeeName") String employeeName,
                                           @RequestPart ("profilePic") String profilePic,
                                           @RequestPart ("gender") String gender,
                                           @RequestPart ("status") String status,
                                           @RequestPart ("designation") String designation,
                                           @RequestPart ("dateOfBirth") String dateOfBirth,
-                                          @RequestPart ("attachedBranch") String attachedBranch,
+                                          @RequestPart ("attachedBranch") String branchId,
                                           @RequestPart ("address1") String address1,
                                           @RequestPart ("address2") String address2,
                                           @RequestPart ("address3") String address3,
@@ -52,19 +50,20 @@ public class Employee {
                                           @RequestPart ("emergencyContactName") String emergencyContactName,
                                           @RequestPart ("emergencyContact") String emergencyContact,
                                           @RequestPart ("dateOfJoin") String dateOfJoin,
-                                          Errors errors
-                                          ){
-        if(errors.hasErrors()){
-            return new ResponseEntity<>(errors.getAllErrors(),HttpStatus.BAD_REQUEST);
+                                          Errors errors) {
+        if (errors.hasFieldErrors()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    errors.getFieldErrors().get(0).getDefaultMessage());
         }
+
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setEmployeeName(employeeName);
-        employeeDTO.setProfilePic(UtilMatter.convertBase64(profilePic));
+        employeeDTO.setPic(UtilMatter.convertBase64(profilePic));
         employeeDTO.setGender(Gender.valueOf(gender));
-        employeeDTO.setStatus(status);
+        employeeDTO.setStatus(Status.valueOf(status));
         employeeDTO.setDesignation(designation);
         employeeDTO.setDateOfBirth(Date.valueOf(dateOfBirth));
-        employeeDTO.setAttachedBranch(attachedBranch);
+        employeeDTO.setBranchId(branchId);
         employeeDTO.setAddress1(address1);
         employeeDTO.setAddress2(address2);
         employeeDTO.setAddress3(address3);
@@ -72,15 +71,21 @@ public class Employee {
         employeeDTO.setPostalCode(postalCode);
         employeeDTO.setContactNo(contactNo);
         employeeDTO.setEmail(email);
-        employeeDTO.setEmergencyContactName(emergencyContactName);
         employeeDTO.setEmergencyContact(emergencyContact);
+        employeeDTO.setEmergencyContactName(emergencyContactName);
         employeeDTO.setDateOfJoin(Date.valueOf(dateOfJoin));
-        employeeService.saveEmployee(employeeDTO);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Employee Details saved Successfully.");
+
+        try {
+            employeeService.saveEmployee(employeeDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Employee Details saved Successfully.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Employee saved Unsuccessfully.\nMore Details\n"+exception);
+        }
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getEmployee(@Validated @PathVariable ("id") String id){
+    @GetMapping(value = "/{id}",produces = "application/json")
+    public ResponseEntity<?> getEmployee(@PathVariable ("id") String id){
         try {
             return ResponseEntity.ok(employeeService.getEmployee(id));
         } catch (NotFoundException exception) {
@@ -91,8 +96,8 @@ public class Employee {
         }
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllEmployees(){
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<?> getEmployee(){
         try {
             return ResponseEntity.ok(employeeService.getAllEmployees());
         } catch (NotFoundException exception) {
@@ -113,17 +118,14 @@ public class Employee {
                                             @RequestPart ("status") String status,
                                             @RequestPart ("designation") String designation,
                                             @RequestPart ("dateOfBirth") String dateOfBirth,
-                                            @RequestPart ("attachedBranch") String attachedBranch,
                                             @RequestPart ("address1") String address1,
                                             @RequestPart ("address2") String address2,
                                             @RequestPart ("address3") String address3,
                                             @RequestPart ("address4") String address4,
                                             @RequestPart ("postalCode") String postalCode,
                                             @RequestPart ("contactNo") String contactNo,
-                                            @RequestPart ("email") String email,
                                             @RequestPart ("emergencyContactName") String emergencyContactName,
                                             @RequestPart ("emergencyContact") String emergencyContact,
-                                            @RequestPart ("dateOfJoin") String dateOfJoin,
                                             Errors errors) {
         if (errors.hasFieldErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -132,22 +134,19 @@ public class Employee {
 
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setEmployeeName(employeeName);
-        employeeDTO.setProfilePic(UtilMatter.convertBase64(profilePic));
+        employeeDTO.setPic(profilePic);
         employeeDTO.setGender(Gender.valueOf(gender));
-        employeeDTO.setStatus(status);
+        employeeDTO.setStatus(Status.valueOf(status));
         employeeDTO.setDesignation(designation);
         employeeDTO.setDateOfBirth(Date.valueOf(dateOfBirth));
-        employeeDTO.setAttachedBranch(attachedBranch);
         employeeDTO.setAddress1(address1);
         employeeDTO.setAddress2(address2);
         employeeDTO.setAddress3(address3);
         employeeDTO.setAddress4(address4);
         employeeDTO.setPostalCode(postalCode);
         employeeDTO.setContactNo(contactNo);
-        employeeDTO.setEmail(email);
         employeeDTO.setEmergencyContact(emergencyContact);
         employeeDTO.setEmergencyContactName(emergencyContactName);
-        employeeDTO.setDateOfJoin(Date.valueOf(dateOfJoin));
 
         try {
             employeeService.updateEmployee(id,employeeDTO);

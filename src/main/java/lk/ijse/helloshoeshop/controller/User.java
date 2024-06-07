@@ -2,6 +2,7 @@ package lk.ijse.helloshoeshop.controller;
 
 import lk.ijse.helloshoeshop.dto.BranchDTO;
 import lk.ijse.helloshoeshop.exeption.InvalidException;
+import lk.ijse.helloshoeshop.exeption.NotFoundException;
 import lk.ijse.helloshoeshop.repostory.request.SignUpRequest;
 import lk.ijse.helloshoeshop.repostory.request.SigninRequest;
 import lk.ijse.helloshoeshop.repostory.response.JwtAuthenticationResponse;
@@ -28,7 +29,7 @@ public class User {
 
     @PostMapping("/signUp")
     public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest signup){
-        System.out.println(signup.getRole());
+        System.out.println(signup.getEmail());
         return ResponseEntity.ok(authenticationService.signup(signup));
     }
 
@@ -60,6 +61,18 @@ public class User {
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
                     body("Internal server error | New Branch Added Unsuccessfully.\nMore Details\n" + exception);
+        }
+    }
+
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<?> getBranches(){
+        try {
+            return ResponseEntity.ok(branchService.getAllBranches());
+        } catch (NotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Branches not found.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body("Internal server error | Branches Details fetched Unsuccessfully.\nMore Reason\n"+exception);
         }
     }
 }

@@ -3,10 +3,12 @@ package lk.ijse.helloshoeshop.service.impl;
 import jakarta.transaction.Transactional;
 import lk.ijse.helloshoeshop.conversion.ConversionData;
 import lk.ijse.helloshoeshop.dto.EmployeeDTO;
+import lk.ijse.helloshoeshop.entity.BranchEntity;
 import lk.ijse.helloshoeshop.entity.CustomerEntity;
 import lk.ijse.helloshoeshop.entity.EmployeeEntity;
 import lk.ijse.helloshoeshop.entity.UserEntity;
 import lk.ijse.helloshoeshop.exeption.NotFoundException;
+import lk.ijse.helloshoeshop.repostory.BranchDao;
 import lk.ijse.helloshoeshop.repostory.CustomerDao;
 import lk.ijse.helloshoeshop.repostory.EmployeeDao;
 import lk.ijse.helloshoeshop.repostory.UserDao;
@@ -27,23 +29,38 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private ConversionData convert;
     @Autowired
+    private BranchDao branchDao;
+    @Autowired
     private UserDao userDao;
     @Override
     public void saveEmployee(EmployeeDTO employeeDTO) {
         employeeDTO.setEmployeeCode(generateNextEmployeeId());
-        Optional<UserEntity> userEntity = userDao.findByEmail(employeeDTO.getEmail());
-        EmployeeEntity employee = convert.convertToEmployeeEntity(employeeDTO);
-        if (userEntity == null) {
+        EmployeeEntity employeeEntity = convert.convertToEmployeeEntity(employeeDTO);
+
+        String email = employeeDTO.getEmail();
+        Optional<UserEntity> byEmail = userDao.findByEmail(email);
+
+        String branchId = employeeDTO.getBranchId();
+        Optional<BranchEntity> byBranch = branchDao.findById(branchId);
+
+        if (byEmail == null) {
             throw new NotFoundException("User Not Found");
         }
-        UserEntity newUser = new UserEntity();
-        newUser.setUserId(userEntity.get().getUserId());
-        newUser.setEmail(userEntity.get().getEmail());
-        newUser.setPassword(userEntity.get().getPassword());
-        newUser.setRole(userEntity.get().getRole());
 
-        employee.setUserEntity(newUser);
-        employeeDao.save(employee);
+        if (byBranch == null){
+            throw new NotFoundException("Branch Not Found");
+        }
+
+        UserEntity newUserEntity = new UserEntity();
+        newUserEntity.setUserId(byEmail.get().getUserId());
+        newUserEntity.setEmail(email);
+        newUserEntity.setPassword(byEmail.get().getPassword());
+        newUserEntity.setRole(byEmail.get().getRole());
+
+        employeeEntity.setUserEntity(newUserEntity);
+        employeeEntity.setBranch(byBranch.get());
+
+        employeeDao.save(employeeEntity);
     }
 
     @Override
@@ -60,7 +77,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void updateEmployee(String id, EmployeeDTO employeeDTO) {
         if(!employeeDao.existsById(id)){throw new NotFoundException("Employee Not Found");}
-        employeeDao.save(convert.convertToEmployeeEntity(employeeDTO));
+        Optional<EmployeeEntity> employeeEntity = employeeDao.findById(id);
+        EmployeeEntity employee = employeeEntity.get();
+        employee.setEmployeeName(employeeDTO.getEmployeeName());
+        employee.setPic(employeeDTO.getPic());
+        employee.setGender(employeeDTO.getGender());
+        employee.setStatus(employeeDTO.getStatus());
+        employee.setDesignation(employeeDTO.getDesignation());
+        employee.setDateOfBirth(employeeDTO.getDateOfBirth());
+        employee.setAddress1(employeeDTO.getAddress1());
+        employee.setAddress2(employeeDTO.getAddress2());
+        employee.setAddress3(employeeDTO.getAddress3());
+        employee.setAddress4(employeeDTO.getAddress4());
+        employee.setPostalCode(employeeDTO.getPostalCode());
+        employee.setContactNo(employeeDTO.getContactNo());
+        employee.setEmergencyContactName(employeeDTO.getEmergencyContactName());
+        employee.setEmergencyContact(employeeDTO.getEmergencyContact());
     }
 
     @Override

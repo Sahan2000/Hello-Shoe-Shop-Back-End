@@ -23,4 +23,6 @@ public class SignUpRequest {
     private String password;
     @NotNull(message = "Role cannot be null")
     private Role role;
+    @NotNull(message = "Branch cannot be null")
+    private String branchId;
 }

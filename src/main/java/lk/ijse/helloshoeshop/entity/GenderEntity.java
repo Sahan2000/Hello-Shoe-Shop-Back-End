@@ -12,6 +12,6 @@ public class GenderEntity implements SuperEntity{
     @Id
     private String genderCode;
     private String genderDesc;
-    @OneToMany(mappedBy = "genderEntity",cascade = CascadeType.ALL)
-    private List<ItemEntity> itemEntities;
+//    @OneToMany(mappedBy = "genderEntity",cascade = CascadeType.ALL)
+//    private List<ItemEntity> itemEntities;
 }

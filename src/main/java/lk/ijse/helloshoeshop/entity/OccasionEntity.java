@@ -14,6 +14,6 @@ public class OccasionEntity implements SuperEntity{
     @Id
     private String occasionCode;
     private String occasionDesc;
-    @OneToMany(mappedBy = "occasionEntity",cascade = CascadeType.ALL)
-    private List<ItemEntity> itemEntities;
+//    @OneToMany(mappedBy = "occasionEntity",cascade = CascadeType.ALL)
+//    private List<ItemEntity> itemEntities;
 }

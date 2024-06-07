@@ -1,15 +1,19 @@
 package lk.ijse.helloshoeshop.service.impl;
 
 import lk.ijse.helloshoeshop.conversion.ConversionData;
+import lk.ijse.helloshoeshop.dto.EmployeeDTO;
 import lk.ijse.helloshoeshop.dto.UserDTO;
 import lk.ijse.helloshoeshop.entity.UserEntity;
 import lk.ijse.helloshoeshop.entity.enumerate.Role;
+import lk.ijse.helloshoeshop.entity.enumerate.Status;
 import lk.ijse.helloshoeshop.repostory.UserDao;
 import lk.ijse.helloshoeshop.repostory.request.SignUpRequest;
 import lk.ijse.helloshoeshop.repostory.request.SigninRequest;
 import lk.ijse.helloshoeshop.repostory.response.JwtAuthenticationResponse;
 import lk.ijse.helloshoeshop.service.AuthenticationService;
+import lk.ijse.helloshoeshop.service.EmployeeService;
 import lk.ijse.helloshoeshop.service.JwtService;
+import lk.ijse.helloshoeshop.util.UtilMatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +22,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -28,16 +34,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final ConversionData conversionData;
+    private final EmployeeService employeeService;
 
     @Override
     public JwtAuthenticationResponse signup(SignUpRequest signUp) {
         UserDTO userDTO = UserDTO.builder()
-                .id(UUID.randomUUID().toString())
+                .id(UtilMatter.generateId())
                 .email(signUp.getEmail())
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .role(signUp.getRole())
                 .build();
         UserEntity saveUser = userDao.save(conversionData.convertToUserEntity(userDTO));
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setEmail(signUp.getEmail());
+        employeeDTO.setDesignation((signUp.getRole().equals(Role.ADMIN)) ?"Manager":null);
+        employeeDTO.setBranchId(signUp.getBranchId());
+        employeeDTO.setStatus(Status.LOW);
+        employeeDTO.setDateOfJoin(Date.valueOf(LocalDate.now()));
+        employeeService.saveEmployee(employeeDTO);
         String generateToken = jwtService.generateToken(saveUser);
         return JwtAuthenticationResponse.builder().token(generateToken).build();
     }
