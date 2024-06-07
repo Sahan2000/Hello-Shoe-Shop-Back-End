@@ -1,5 +1,6 @@
 package lk.ijse.helloshoeshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lk.ijse.helloshoeshop.entity.enumerate.Role;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class UserEntity implements SuperEntity, UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @JsonIgnore
     @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
     private List<OrderEntity> orderEntities;
 

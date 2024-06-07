@@ -1,5 +1,6 @@
 package lk.ijse.helloshoeshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lk.ijse.helloshoeshop.entity.enumerate.Gender;
 import lk.ijse.helloshoeshop.entity.enumerate.Level;
@@ -41,6 +42,7 @@ public class CustomerEntity implements SuperEntity{
     private String email;
     private Timestamp recentPurchasedDate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "customerEntity",cascade = CascadeType.ALL)
     private List<OrderEntity> orderEntities;
 
